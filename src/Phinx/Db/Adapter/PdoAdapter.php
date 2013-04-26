@@ -419,9 +419,11 @@ abstract class PdoAdapter implements AdapterInterface
             'decimal',
             'datetime',
             'timestamp',
+            'current_timestamp',
             'time',
             'date',
             'binary',
+            'varbinary',
             'boolean'
         );
     }

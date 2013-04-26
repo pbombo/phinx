@@ -628,6 +628,9 @@ class MysqlAdapter extends PdoAdapter implements AdapterInterface
             case 'timestamp':
                 return array('name' => 'timestamp');
                 break;
+            case 'current_timestamp':
+                return array('name' => 'timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
+                break;
             case 'time':
                 return array('name' => 'time');
                 break;
@@ -635,14 +638,16 @@ class MysqlAdapter extends PdoAdapter implements AdapterInterface
                 return array('name' => 'date');
                 break;
             case 'binary':
-                return array('name' => 'blob');
+                return array('name' => 'binary');
+                break;
+            case 'varbinary':
+                return array('name' => 'varbinary');
                 break;
             case 'boolean':
                 return array('name' => 'tinyint', 'limit' => 1);
                 break;
             default:
                 throw new \RuntimeException('The type: "' . $type . '" is not supported.');
-        }
     }
 
     /**
