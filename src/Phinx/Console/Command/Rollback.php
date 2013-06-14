@@ -44,7 +44,7 @@ class Rollback extends AbstractCommand
         parent::configure();
          
         $this->addOption('--environment', '-e', InputArgument::OPTIONAL, 'The target environment');
-                  
+        
         $this->setName('rollback')
              ->setDescription('Rollback the last or to a specific migration')
              ->addOption('--target', '-t', InputArgument::OPTIONAL, 'The version number to rollback to')
@@ -53,6 +53,7 @@ The <info>rollback</info> command reverts the last migration, or optionally up t
 
 <info>phinx rollback -e development</info>
 <info>phinx rollback -e development -t 20111018185412</info>
+<info>phinx rollback -e development -v</info>
 
 EOT
         );
@@ -77,7 +78,16 @@ EOT
             $output->writeln('<info>using environment</info> ' . $environment);
         }
         
+        $envOptions = $this->getConfig()->getEnvironment($environment);
+        $output->writeln('<info>using adapter</info> ' . $envOptions['adapter']);
+        $output->writeln('<info>using database</info> ' . $envOptions['name']);
+        
         // rollback the specified environment
+        $start = microtime(true);
         $this->getManager()->rollback($environment, $version);
+        $end = microtime(true);
+        
+        $output->writeln('');
+        $output->writeln('<comment>All Done. Took ' . sprintf('%.4fs', $end - $start) . '</comment>');
     }
 }
